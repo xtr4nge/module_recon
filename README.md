@@ -7,7 +7,7 @@ v1.1
 ---------------------------------
 - start|stop has been fixed
 - Input validation has been fixed
-- about.php has been added
+- about page has been added
 - client full details has been added
 
 

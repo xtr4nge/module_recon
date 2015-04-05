@@ -1,12 +1,12 @@
 <?
 $mod_name="recon";
-$mod_version="1.0";
+$mod_version="1.1";
 $mod_path="/usr/share/fruitywifi/www/modules/$mod_name";
 $mod_logs="$log_path/$mod_name.log"; 
 $mod_logs_history="$mod_path/includes/logs/";
 $mod_panel="show";
 //$mod_isup="ls /var/www/$mod_name";
-$mod_isup="ps auxww | grep mitmdump | grep -v -e grep";
+$mod_isup="ps auxww | grep -E 'mitmdump.+inject_recon' | grep -v -e grep";
 $mod_alias="Recon";
 # EXEC
 $bin_danger = "/usr/share/fruitywifi/bin/danger";

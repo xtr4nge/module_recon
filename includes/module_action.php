@@ -76,7 +76,10 @@ if($service == $mod_name) {
         $exec = "rm /var/www/recon";
         exec_fruitywifi($exec);
 		
-		$exec = "$bin_killall mitmdump";
+		$exec = "ps aux|grep -E 'mitmdump.+inject_recon' | grep -v grep | awk '{print $2}'";
+		exec($exec,$output);
+		
+		$exec = "kill " . $output[0];
 		exec_fruitywifi($exec);
 	
 		// COPY LOG

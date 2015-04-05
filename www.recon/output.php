@@ -1,3 +1,33 @@
+<?
+/*
+    Copyright (C) 2013-2015 xtr4nge [_AT_] gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/ 
+?>
+<?
+include "../../../login_check.php";
+include "../../../config/config.php";
+include "../../../functions.php";
+
+// Checking POST & GET variables...
+if ($regex == 1) {
+    regex_standard($_GET["type"], "../../../msg.php", $regex_extra);
+    regex_standard($_GET["id_details"], "../../../msg.php", $regex_extra);
+}
+
+?>
 
 <link rel="stylesheet" href="../../css/jquery-ui.css" />
 <link rel="stylesheet" href="../../css/style.css" />
@@ -36,9 +66,81 @@ function getDetails() {
         echo "<tr>
             <td style='background-color:#DDD; padding-right:10px' nowrap>$p_time</td>
             <td style='background-color:#DDD; padding-right:10px' nowrap>$p_remote_addr</td>
-            <td style='background-color:#DDD; padding-right:10px'>$p_remote_mac</td>
+            <td style='background-color:#DDD; padding-right:10px'><a href='output.php?type=getclientdetails&id_details=$p_id'>$p_remote_mac</a></td>
             <td style='background-color:#DDD; padding-right:10px'><a href='output.php?type=getplugins&id_details=$p_id'>plugins</a></td>
         </tr>";
+    }
+    echo "</table>";
+    
+    $file_db = null;
+}
+
+function getClientDetails($id_details) {
+    // Create (connect to) SQLite database in file
+
+    $file_db = new PDO('sqlite:db/db.sqlite3');
+    // Set errormode to exceptions
+    //$file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    $sql = "SELECT * FROM details WHERE id = '$id_details';";
+    
+    $result = $file_db->query($sql);
+    
+    //print_r($result);
+    
+    $rowarray = $result->fetchall(PDO::FETCH_ASSOC);
+    
+    
+    echo "<table class='general'>";
+    /*
+    echo "  <tr>
+                <td><b>time</b></td>
+                <td><b>remote_addr</b></td>
+                <td><b>remote_mac</b></td>
+                <td><b>plugins</b></td>
+            </tr>";
+    */
+    foreach($rowarray as $row) {
+        $p_id = $row["id"];
+        $p_remote_addr = $row["remote_addr"]; // user_agent, remote_addr, remote_mac, time
+        $p_remote_mac = $row["remote_mac"];
+        $p_user_agent = $row["user_agent"];
+        $p_time = $row["time"];
+        /*
+        echo "<div>";
+        echo "<b>time:</b> " . $p_time . "<br>";
+        echo "<b>remote_addr:</b> " . $p_remote_addr . "<br>";
+        echo "<b>remote_mac:</b> " . $p_remote_mac . "<br>";
+        echo "<b>user_agent:</b> " . $p_user_agent . "<br>";
+        echo "</div>";
+        */
+        /*
+        echo "<tr>
+                <td style='background-color:#DDD; padding-right:10px' nowrap>$p_time</td>
+                <td style='background-color:#DDD; padding-right:10px' nowrap>$p_remote_addr</td>
+                <td style='background-color:#DDD; padding-right:10px'>$p_remote_mac</td>
+                <td style='background-color:#DDD; padding-right:10px'><a href='output.php?type=getplugins&id_details=$p_id'>plugins</a></td>
+            </tr>";
+        */  
+        echo "
+            <tr>
+                <td style='background-color:#DDD; padding-right:10px'>time</td>
+                <td style='background-color:#DDD; padding-right:10px'>$p_time</td>
+            </tr>
+            <tr>
+                <td style='background-color:#DDD; padding-right:10px'>remote_addr</td>
+                <td style='background-color:#DDD; padding-right:10px'>$p_remote_addr</td>
+            </tr>
+            <tr>
+                <td style='background-color:#DDD; padding-right:10px'>remote_mac</td>
+                <td style='background-color:#DDD; padding-right:10px'>$p_remote_mac</td>
+            </tr>
+            <tr>
+                <td style='background-color:#DDD; padding-right:10px'>user_agent</td>
+                <td style='background-color:#DDD; padding-right:10px'>$p_user_agent</td>
+            </tr>
+            ";
+        
     }
     echo "</table>";
     
@@ -148,6 +250,8 @@ $id_details = $_GET["id_details"];
 
 if($type == "getplugins") {
     getPlugins($id_details);
+} else if($type == "getclientdetails") {
+    getClientDetails($id_details);
 } else {
     getDetails();
 }

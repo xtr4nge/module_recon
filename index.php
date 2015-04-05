@@ -117,6 +117,7 @@ Loading, please wait...
             <li><a href="#result-1">Output</a></li>
             <li><a href="#result-2">DB</a></li>
             <li><a href="#result-3">History</a></li>
+            <li><a href="#result-4">About</a></li>
         </ul>
         <div id="result-1">
             <form id="formLogs-Refresh" name="formLogs-Refresh" method="POST" autocomplete="off" action="index.php">
@@ -173,6 +174,16 @@ Loading, please wait...
             ?>
             
         </div>
+        
+        <!-- END HISTORY -->
+        
+        <!-- ABOUT -->
+
+        <div id="result-4" class="history">
+            <? include "includes/about.php"; ?>
+        </div>
+        
+        <!-- END ABOUT -->
         
     </div>
 

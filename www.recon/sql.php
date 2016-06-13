@@ -18,6 +18,14 @@
 ?>
 <?
 
+function sec_cleanTAGS($var) {
+	$var = strip_tags($var);
+	$var = str_replace("'", "", $var);
+	$var = str_replace("\"", "", $var);
+	$var = str_replace(";", "", $var);
+	return strip_tags($var);
+}
+
 function createDB() {
     // Create (connect to) SQLite database in file
     $file_db = new PDO('sqlite:db/db.sqlite3');
@@ -51,10 +59,10 @@ function sqlAddDetails() {
     $file_db->setAttribute(PDO::ATTR_ERRMODE, 
                            PDO::ERRMODE_EXCEPTION);
     
-    $p_user_agent = $_POST["p_user_agent"];
-    $p_remote_addr = $_POST["p_remote_addr"];
-    $p_remote_mac = $_POST["p_remote_mac"];
-    $p_time = $_POST["p_time"];
+    $p_user_agent = sec_cleanTAGS($_POST["p_user_agent"]);
+    $p_remote_addr = sec_cleanTAGS($_POST["p_remote_addr"]);
+    $p_remote_mac = sec_cleanTAGS($_POST["p_remote_mac"]);
+    $p_time = sec_cleanTAGS($_POST["p_time"]);
     
     $sql = "INSERT INTO details 
             (user_agent, remote_addr, remote_mac, time) 
@@ -72,11 +80,11 @@ function sqlAddPlugins($id_details) {
     // Set errormode to exceptions
     $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    $p_id_details = $_POST["p_id_details"];
-    $p_name = $_POST["p_name"];
-    $p_filename = $_POST["p_filename"];
-    $p_description = $_POST["p_description"];
-    $p_version = $_POST["p_version"];
+    $p_id_details = sec_cleanTAGS($_POST["p_id_details"]);
+    $p_name = sec_cleanTAGS($_POST["p_name"]);
+    $p_filename = sec_cleanTAGS($_POST["p_filename"]);
+    $p_description = sec_cleanTAGS($_POST["p_description"]);
+    $p_version = sec_cleanTAGS($_POST["p_version"]);
     $p_time = date('Y-m-d H:i:s');
     
     $sql = "INSERT INTO plugins 
@@ -91,9 +99,9 @@ function sqlAddPlugins($id_details) {
 
 function fileAction() {
     
-    $p_user_agent = $_POST["p_user_agent"];
-    $p_remote_addr = $_POST["p_remote_addr"];
-    $p_remote_mac = $_POST["p_remote_mac"];
+    $p_user_agent = sec_cleanTAGS($_POST["p_user_agent"]);
+    $p_remote_addr = sec_cleanTAGS($_POST["p_remote_addr"]);
+    $p_remote_mac = sec_cleanTAGS($_POST["p_remote_mac"]);
     
     $myFile = "save.txt";
     $fh = fopen($myFile, 'a') or die("can't open file");
@@ -123,10 +131,10 @@ function searchIP($client_conn) {
     // Set errormode to exceptions
     $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    $p_remote_mac = $_POST["p_remote_mac"];
+    $p_remote_mac = sec_cleanTAGS($_POST["p_remote_mac"]);
     $p_time = date('Y-m-d H:i:s');
     
-    $p_user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $p_user_agent = sec_cleanTAGS($_SERVER['HTTP_USER_AGENT']);
     //$p_remote_addr = $_SERVER['REMOTE_ADDR'];
     $p_remote_addr = $client_conn;
     
@@ -175,8 +183,8 @@ function setDetails($p_remote_addr, $p_remote_mac, $p_user_agent) {
     
 }
 
-$p_type = $_POST["p_type"];
-$client_conn = $_POST["client_conn"];
+$p_type = sec_cleanTAGS($_POST["p_type"]);
+$client_conn = sec_cleanTAGS($_POST["client_conn"]);
 
 createDB();
 if ($p_type == "details") {

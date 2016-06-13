@@ -1,7 +1,13 @@
 module_recon
 ==============
 
-FruityWifi reconnaissance module
+FruityWiFi reconnaissance module
+
+v1.2
+---------------------------------
+- minor fix
+- support for mitmproxy v0.17
+
 
 v1.1
 ---------------------------------

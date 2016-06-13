@@ -56,8 +56,11 @@ if($service == $mod_name) {
             exec_fruitywifi($exec);
         }
 	
-		$exec = "$bin_iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port $port";
-		exec_fruitywifi($exec);
+	$exec = "chmod 777 ../www.recon/db/";
+	exec_fruitywifi($exec);
+	
+	$exec = "$bin_iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port $port";
+	exec_fruitywifi($exec);
 	
         $exec = "ln -s $mod_path/www.recon /var/www/recon";
         exec_fruitywifi($exec);
